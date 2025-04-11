@@ -1,0 +1,11 @@
+{	"recommendations": [
+  "vitest.explorer",
+  "biomejs.biome",
+  "eamodio.gitlens",
+  "christian-kohler.path-intellisense",
+  "yoavbls.pretty-ts-errors",
+  "rioukkevin.vscode-git-commit",
+  "gruntfuggly.todo-tree",
+  "mattpocock.ts-error-translator"
+],
+}

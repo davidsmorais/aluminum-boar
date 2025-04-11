@@ -1,0 +1,159 @@
+{
+	"todo-tree.highlights.customHighlight": {
+		"TODO": {
+			"icon": "check-circle-fill",
+			"foreground": "#c1d9f2",
+			"background": "#1ccb5b",
+			"iconColour": "#1ccb5b"
+		},
+		"FIX": {
+			"icon": "x-circle-fill",
+			"foreground": "#fff163",
+			"background": "#ff6675",
+			"iconColour": "#ff6675"
+		},
+		"FIXME": {
+			"icon": "x-circle-fill",
+			"foreground": "#fff163",
+			"background": "#ff6675",
+			"iconColour": "#ff6675"
+		},
+		"TEMP": {
+			"icon": "trash",
+			"foreground": "#1e1c30",
+			"background": "#7f4823",
+			"iconColour": "#7f4823"
+		},
+		"WARN": {
+			"icon": "alert",
+			"foreground": "#f8ff62",
+			"background": "#f5c161",
+			"iconColour": "#f5c161"
+		},
+		"HACK": {
+			"icon": "code",
+			"foreground": "#65ff65",
+			"background": "#8469cb",
+			"iconColour": "#8469cb"
+		},
+		"BUG": {
+			"icon": "bug",
+			"foreground": "#a73944",
+			"background": "#2c0000",
+			"iconColour": "#a73944"
+		},
+		"NOTE": {
+			"icon": "feed-repo",
+			"foreground": "#8ab5eb",
+			"background": "#586eff",
+			"iconColour": "#586eff"
+		},
+		"FYI": {
+			"icon": "info",
+			"foreground": "#ff7053",
+			"background": "#564ac8",
+			"iconColour": "#564ac8"
+		}
+	},
+	"todo-tree.general.tags": [
+		"BUG",
+		"NOTE",
+		"HACK",
+		"FIX",
+		"WARN",
+		"WIP",
+		"TODO",
+		"CLEAN",
+		"POLISH",
+		"TEMP",
+		"FYI"
+	],
+	"vscodeGitCommit.defaultVariablesValues": {
+		"taskCode": "DMS-",
+		"scope": "🕹️game",
+	},
+	"vscodeGitCommit.variablesDisplayTitles": {
+		"action": "⚒️ part of",
+		"scope": "Commit scope"
+	},
+	"vscodeGitCommit.template": [
+		"{prefix}({scope}): {message}",
+		"    {action} DMS-{taskCode}"
+	],
+	"vscodeGitCommit.variables": {
+		"prefix": [
+			{
+				"label": "✨feat",
+				"detail": "A new, relatively big feature. Correlates with MAJOR release in SemVer"
+			},
+			{
+				"label": "🐛fix",
+				"detail": "Fixes a bug in the codebase"
+			},
+			{
+				"label": "📝docs",
+				"detail": "Documentation added or updated"
+			},
+			{
+				"label": "🔮refactor",
+				"detail": "Change something in the codebase without changing its functionality"
+			},
+			{
+				"label": "🚀perf",
+				"detail": "A code change that improves performance"
+			},
+			{
+				"label": "🤖ci",
+				"detail": "A commit where build system, external dependecies or CI/CD configuration files are changed"
+			},
+			{
+				"label": "🧪test",
+				"detail": "A commit where tests and specs were updated or added"
+			},
+			{
+				"label": "📦build",
+				"detail": "Changes that affect the build system"
+			},
+			{
+				"label": "🧹chore",
+				"detail": "Cleaning up linter warnings, console.log statements or Typescript errors"
+			}
+		],
+		"scope": [
+			{
+				"label": "🕹️game",
+				"detail": "Game related changes"
+			},
+			{
+				"label": "📦assets",
+				"detail": "Adds/Moves assets in the codebase"
+			},
+			{
+				"label": "🛠️tools",
+				"detail": "Tooling related changes"
+			},
+			{
+				"label": "📐ui",
+				"detail": "Changes related to the UI"
+			}
+		],
+		"action": [
+			{
+				"label": "",
+				"detail": "Empty"
+			},
+			{
+				"label": "⚒️ part of",
+				"detail": "A commit that progresses a task or an epic"
+			},
+			{
+				"label": "✅ closes",
+				"detail": "A commit that marks the finish of a task or an epic"
+			},
+			{
+				"label": "💀 deprecates",
+				"detail": "A commit that deprecates something"
+			}
+		]
+	}
+}
