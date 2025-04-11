@@ -70,7 +70,7 @@
 	],
 	"vscodeGitCommit.defaultVariablesValues": {
 		"taskCode": "DMS-",
-		"scope": "🕹️game",
+		"scope": "🕹️game"
 	},
 	"vscodeGitCommit.variablesDisplayTitles": {
 		"action": "⚒️ part of",
@@ -78,7 +78,7 @@
 	},
 	"vscodeGitCommit.template": [
 		"{prefix}({scope}): {message}",
-		"    {action} DMS-{taskCode}"
+		"    {action} {taskCode}"
 	],
 	"vscodeGitCommit.variables": {
 		"prefix": [
