@@ -1,3 +1,4 @@
+import { SpritesPlayer } from "../../types/assets";
 import { GAME_OPTIONS } from "../GameOptions";
 
 // PlayGame class extends Phaser.Scene class
@@ -18,7 +19,7 @@ export class Game extends Phaser.Scene {
 		this.player = this.physics.add.sprite(
 			GAME_OPTIONS.gameSize.width / 2,
 			GAME_OPTIONS.gameSize.height / 2,
-			"player",
+			SpritesPlayer.getName(),
 		);
 		this.enemyGroup = this.physics.add.group();
 		const bulletGroup: Phaser.Physics.Arcade.Group = this.physics.add.group();

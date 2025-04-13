@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { SpritesPlayer } from "../../types/assets";
 
 export class Preloader extends Scene {
 	constructor() {
@@ -23,11 +24,11 @@ export class Preloader extends Scene {
 	}
 
 	preload() {
-		//  Load the assets for the game - Replace with your own assets
-		this.load.setPath("assets");
-
-		this.load.image("logo", "logo.png");
-		this.load.image("star", "star.png");
+		this.load.atlas(
+			SpritesPlayer.getName(), // Key for the sprite
+			SpritesPlayer.getPNG(), // Path to the PNG file
+			SpritesPlayer.getJSON(), // Path to the JSON file
+		);
 	}
 
 	create() {

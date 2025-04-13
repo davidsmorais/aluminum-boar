@@ -8,4 +8,10 @@ export default defineConfig({
 	server: {
 		port: 8080,
 	},
+	resolve: {
+		alias: {
+			// Manually map the alias if needed
+			public: "/public",
+		},
+	},
 });
