@@ -112,9 +112,11 @@ export class Game extends Phaser.Scene {
 			0,
 		);
 		if (this.controlKeys.right.isDown) {
+			this.player.flipX = false;
 			movementDirection.x++;
 		}
 		if (this.controlKeys.left.isDown) {
+			this.player.flipX = true;
 			movementDirection.x--;
 		}
 		if (this.controlKeys.up.isDown) {
@@ -141,7 +143,7 @@ export class Game extends Phaser.Scene {
 		// Play "run" animation if moving, stop animation if not
 		if (movementDirection.x !== 0 || movementDirection.y !== 0) {
 			if (this.player.anims.currentAnim?.key !== "run") {
-				this.player.play("run", true);
+				this.player.play({ key: "run", repeat: -1 });
 			}
 		} else {
 			this.player.play("idle", true);
