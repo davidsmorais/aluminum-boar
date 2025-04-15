@@ -15,6 +15,9 @@ export class Game extends Phaser.Scene {
 
 	// method to be called once the instance has been created
 	create(): void {
+		// NOTE: add animations to scene animations manager
+		this.anims.createFromAseprite(SpritesPlayer.getName());
+
 		// add player, enemies group and bullets group
 		this.player = this.physics.add.sprite(
 			GAME_OPTIONS.gameSize.width / 2,
@@ -133,6 +136,15 @@ export class Game extends Phaser.Scene {
 				(movementDirection.x * GAME_OPTIONS.playerSpeed) / Math.sqrt(2),
 				(movementDirection.y * GAME_OPTIONS.playerSpeed) / Math.sqrt(2),
 			);
+		}
+
+		// Play "run" animation if moving, stop animation if not
+		if (movementDirection.x !== 0 || movementDirection.y !== 0) {
+			if (this.player.anims.currentAnim?.key !== "run") {
+				this.player.play("run", true);
+			}
+		} else {
+			this.player.play("idle", true);
 		}
 
 		// move enemies towards player

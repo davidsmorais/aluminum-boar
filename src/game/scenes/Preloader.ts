@@ -24,7 +24,7 @@ export class Preloader extends Scene {
 	}
 
 	preload() {
-		this.load.atlas(
+		this.load.aseprite(
 			SpritesPlayer.getName(), // Key for the sprite
 			SpritesPlayer.getPNG(), // Path to the PNG file
 			SpritesPlayer.getJSON(), // Path to the JSON file
