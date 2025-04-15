@@ -204,17 +204,17 @@ function dumpAssetClassCode(_className, assets) {
 					if (file.extName === "css") {
 						// TODO: Use ?inline imports (breaks webfont loader)
 						s.push(
-							`import ${
+							`const ${
 								asset.className
-							}${file.extName.toUpperCase()} from "public/assets/${file.assetName}.${
+							}${file.extName.toUpperCase()} = "/assets/${file.assetName}.${
 								file.extName
 							}";`,
 						);
 					} else {
 						s.push(
-							`import ${
+							`const ${
 								asset.className
-							}${file.extName.toUpperCase()} from "public/assets/${file.assetName}.${
+							}${file.extName.toUpperCase()} = "/assets/${file.assetName}.${
 								file.extName
 							}";`,
 						);
