@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { SpritesPlayer } from "../../types/assets";
+import { SpritesPlayer, SpritesRat } from "../../types/assets";
 
 export class Preloader extends Scene {
 	constructor() {
@@ -28,6 +28,11 @@ export class Preloader extends Scene {
 			SpritesPlayer.getName(), // Key for the sprite
 			SpritesPlayer.getPNG(), // Path to the PNG file
 			SpritesPlayer.getJSON(), // Path to the JSON file
+		);
+		this.load.aseprite(
+			SpritesRat.getName(), // Key for the sprite
+			SpritesRat.getPNG(), // Path to the PNG file
+			SpritesRat.getJSON(), // Path to the JSON file
 		);
 	}
 

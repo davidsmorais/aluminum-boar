@@ -1,4 +1,4 @@
-import { SpritesPlayer } from "../../types/assets";
+import { SpritesPlayer, SpritesRat } from "../../types/assets";
 import { GAME_OPTIONS } from "../GameOptions";
 
 // PlayGame class extends Phaser.Scene class
@@ -17,14 +17,14 @@ export class Game extends Phaser.Scene {
 	create(): void {
 		// NOTE: add animations to scene animations manager
 		this.anims.createFromAseprite(SpritesPlayer.getName());
-
+		this.anims.createFromAseprite(SpritesRat.getName());
 		// add player, enemies group and bullets group
 		this.player = this.physics.add.sprite(
 			GAME_OPTIONS.gameSize.width / 2,
 			GAME_OPTIONS.gameSize.height / 2,
 			SpritesPlayer.getName(),
 		);
-		this.enemyGroup = this.physics.add.group();
+		this.enemyGroup = this.physics.add.group({});
 		const bulletGroup: Phaser.Physics.Arcade.Group = this.physics.add.group();
 
 		// set keyboard controls
@@ -59,8 +59,13 @@ export class Game extends Phaser.Scene {
 				const spawnPoint: Phaser.Geom.Point =
 					Phaser.Geom.Rectangle.RandomOutside(outerRectangle, innerRectangle);
 				const enemy: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody =
-					this.physics.add.sprite(spawnPoint.x, spawnPoint.y, "enemy");
+					this.physics.add.sprite(
+						spawnPoint.x,
+						spawnPoint.y,
+						SpritesRat.getName(),
+					);
 				this.enemyGroup.add(enemy);
+				enemy.setScale(3);
 			},
 		});
 
@@ -151,6 +156,16 @@ export class Game extends Phaser.Scene {
 
 		// move enemies towards player
 		this.enemyGroup.getMatching("visible", true).forEach((enemy) => {
+			if (enemy.anims.currentAnim?.key !== "rat_run") {
+				enemy.play({ key: "rat_run", repeat: -1 });
+				console.log("Playing run animation", enemy);
+			}
+			if (enemy.body.velocity.x < 0 && enemy.flipX === false) {
+				console.log("Flipping");
+				enemy.flipX = true;
+			} else if (enemy.body.velocity.x > 0 && enemy.flipX === true) {
+				enemy.flipX = false;
+			}
 			this.physics.moveToObject(enemy, this.player, GAME_OPTIONS.enemySpeed);
 		});
 	}
