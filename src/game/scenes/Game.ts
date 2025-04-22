@@ -68,14 +68,14 @@ export class Game extends Phaser.Scene {
 
 		// set outer rectangle and inner rectangle; enemy spawn area is between these rectangles
 		const outerRectangle: Phaser.Geom.Rectangle = new Phaser.Geom.Rectangle(
-			-100,
-			-100,
+			this.player.x - 100,
+			this.player.y - 100,
 			GAME_OPTIONS.gameSize.width + 200,
 			GAME_OPTIONS.gameSize.height + 200,
 		);
 		const innerRectangle: Phaser.Geom.Rectangle = new Phaser.Geom.Rectangle(
-			-50,
-			-50,
+			this.player.x - 50,
+			this.player.y - 50,
 			GAME_OPTIONS.gameSize.width + 100,
 			GAME_OPTIONS.gameSize.height + 100,
 		);
