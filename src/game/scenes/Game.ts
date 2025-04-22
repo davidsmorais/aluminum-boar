@@ -1,4 +1,10 @@
-import { SpritesPlayer, SpritesRat, SpritesWeapons } from "../../types/assets";
+import {
+	SpritesPlayer,
+	SpritesRat,
+	SpritesWeapons,
+	TilemapsDemo,
+	TilemapsTileset,
+} from "../../types/assets";
 import { GAME_OPTIONS } from "../GameOptions";
 
 // PlayGame class extends Phaser.Scene class
@@ -12,7 +18,7 @@ export class Game extends Phaser.Scene {
 	controlKeys: any; // keys used to move the player
 	player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody; // the player
 	enemyGroup: Phaser.Physics.Arcade.Group; // group with all enemies
-
+	colliderLayers: Phaser.Tilemaps.TilemapLayer | null; // layer with all tiles that collide
 	// method to be called once the instance has been created
 	create(): void {
 		// NOTE: add animations to scene animations manager
@@ -20,12 +26,33 @@ export class Game extends Phaser.Scene {
 		this.anims.createFromAseprite(SpritesRat.getName());
 		this.anims.createFromAseprite(SpritesWeapons.getName());
 		// add player, enemies group and bullets group
-		this.player = this.physics.add.sprite(
-			GAME_OPTIONS.gameSize.width / 2,
-			GAME_OPTIONS.gameSize.height / 2,
-			SpritesPlayer.getName(),
+		// Create the tilemap
+		const map = this.make.tilemap({ key: TilemapsDemo.getName() });
+
+		// Add the tileset image to the map
+		const tileset = map.addTilesetImage(
+			"basic_tiles",
+			TilemapsTileset.getName(),
 		);
-		this.enemyGroup = this.physics.add.group({});
+
+		if (tileset) {
+			// Create layers from the tilemap
+			this.colliderLayers = map.createLayer("layer", tileset, 0, 0);
+			this.player = this.physics.add.sprite(
+				GAME_OPTIONS.gameSize.width / 2,
+				GAME_OPTIONS.gameSize.height / 2,
+				SpritesPlayer.getName(),
+			);
+			this.enemyGroup = this.physics.add.group({});
+			if (this.colliderLayers) {
+				// Set collision for the obstacles layer
+				this.colliderLayers.setCollisionByProperty({ collide: true });
+
+				this.physics.add.collider(this.player, this.colliderLayers);
+				this.physics.add.collider(this.enemyGroup, this.colliderLayers);
+			}
+		}
+
 		const bulletGroup: Phaser.Physics.Arcade.Group = this.physics.add.group();
 
 		// set keyboard controls

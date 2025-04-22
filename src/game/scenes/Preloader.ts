@@ -1,5 +1,11 @@
 import { Scene } from "phaser";
-import { SpritesPlayer, SpritesRat, SpritesWeapons } from "../../types/assets";
+import {
+	SpritesPlayer,
+	SpritesRat,
+	SpritesWeapons,
+	TilemapsDemo,
+	TilemapsTileset,
+} from "../../types/assets";
 
 export class Preloader extends Scene {
 	constructor() {
@@ -24,6 +30,8 @@ export class Preloader extends Scene {
 	}
 
 	preload() {
+		this.load.image(TilemapsTileset.getName(), TilemapsTileset.getPNG());
+		this.load.tilemapTiledJSON(TilemapsDemo.getName(), TilemapsDemo.getJSON());
 		this.load.aseprite(
 			SpritesPlayer.getName(), // Key for the sprite
 			SpritesPlayer.getPNG(), // Path to the PNG file
