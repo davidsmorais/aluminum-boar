@@ -1,4 +1,4 @@
-import { SpritesPlayer, SpritesRat } from "../../types/assets";
+import { SpritesPlayer, SpritesRat, SpritesWeapons } from "../../types/assets";
 import { GAME_OPTIONS } from "../GameOptions";
 
 // PlayGame class extends Phaser.Scene class
@@ -18,6 +18,7 @@ export class Game extends Phaser.Scene {
 		// NOTE: add animations to scene animations manager
 		this.anims.createFromAseprite(SpritesPlayer.getName());
 		this.anims.createFromAseprite(SpritesRat.getName());
+		this.anims.createFromAseprite(SpritesWeapons.getName());
 		// add player, enemies group and bullets group
 		this.player = this.physics.add.sprite(
 			GAME_OPTIONS.gameSize.width / 2,
@@ -80,8 +81,13 @@ export class Game extends Phaser.Scene {
 				);
 				if (closestEnemy != null) {
 					const bullet: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody =
-						this.physics.add.sprite(this.player.x, this.player.y, "bullet");
+						this.physics.add.sprite(
+							this.player.x,
+							this.player.y,
+							SpritesWeapons.getName(),
+						);
 					bulletGroup.add(bullet);
+					bullet.play("knife");
 					this.physics.moveToObject(
 						bullet,
 						closestEnemy,
@@ -158,10 +164,8 @@ export class Game extends Phaser.Scene {
 		this.enemyGroup.getMatching("visible", true).forEach((enemy) => {
 			if (enemy.anims.currentAnim?.key !== "rat_run") {
 				enemy.play({ key: "rat_run", repeat: -1 });
-				console.log("Playing run animation", enemy);
 			}
 			if (enemy.body.velocity.x < 0 && enemy.flipX === false) {
-				console.log("Flipping");
 				enemy.flipX = true;
 			} else if (enemy.body.velocity.x > 0 && enemy.flipX === true) {
 				enemy.flipX = false;
