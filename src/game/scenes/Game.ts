@@ -65,8 +65,9 @@ export class Game extends Phaser.Scene {
 						spawnPoint.y,
 						SpritesRat.getName(),
 					);
+				enemy.body.setSize(16, 16);
+				enemy.body.setOffset(8, 16);
 				this.enemyGroup.add(enemy);
-				enemy.setScale(3);
 			},
 		});
 
@@ -88,6 +89,15 @@ export class Game extends Phaser.Scene {
 						);
 					bulletGroup.add(bullet);
 					bullet.play("knife");
+
+					bullet.body.setAllowRotation(true);
+					bullet.rotation = Phaser.Math.Angle.Between(
+						this.player.x,
+						this.player.y,
+						closestEnemy.x,
+						closestEnemy.y,
+					);
+					bullet.body.setSize(2, 2);
 					this.physics.moveToObject(
 						bullet,
 						closestEnemy,

@@ -24,6 +24,9 @@ const configObject: Phaser.Types.Core.GameConfig = {
 	parent: "game-container",
 	scene: [Boot, Preloader, MainMenu, MainGame, GameOver],
 	physics: {
+		arcade: {
+			// debug: true,
+		},
 		default: "arcade", // physics engine used is arcade physics
 	},
 };
