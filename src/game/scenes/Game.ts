@@ -43,6 +43,7 @@ export class Game extends Phaser.Scene {
 				GAME_OPTIONS.gameSize.height / 2,
 				SpritesPlayer.getName(),
 			);
+			this.cameras.main.startFollow(this.player);
 			this.enemyGroup = this.physics.add.group({});
 			if (this.colliderLayers) {
 				// Set collision for the obstacles layer
