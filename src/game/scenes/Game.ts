@@ -6,6 +6,7 @@ import {
 	TilemapsTileset,
 } from "../../types/assets";
 import { GAME_OPTIONS } from "../GameOptions";
+import { PlayerCharacter } from "../characters/PlayerCharacter";
 
 // PlayGame class extends Phaser.Scene class
 export class Game extends Phaser.Scene {
@@ -16,7 +17,7 @@ export class Game extends Phaser.Scene {
 	}
 
 	controlKeys: any; // keys used to move the player
-	player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody; // the player
+	player: PlayerCharacter; // player character
 	enemyGroup: Phaser.Physics.Arcade.Group; // group with all enemies
 	colliderLayers: Phaser.Tilemaps.TilemapLayer | null; // layer with all tiles that collide
 	// method to be called once the instance has been created
@@ -38,18 +39,32 @@ export class Game extends Phaser.Scene {
 		if (tileset) {
 			// Create layers from the tilemap
 			this.colliderLayers = map.createLayer("layer", tileset, 0, 0);
-			this.player = this.physics.add.sprite(
+
+			// Create the player sprite
+			const playerSprite = this.physics.add.sprite(
 				GAME_OPTIONS.gameSize.width / 2,
 				GAME_OPTIONS.gameSize.height / 2,
 				SpritesPlayer.getName(),
 			);
-			this.cameras.main.startFollow(this.player);
+
+			// Initialize the player character with stats and sprite
+			this.player = new PlayerCharacter(
+				"Player",
+				1,
+				{ health: 100, attack: 10, defense: 5, speed: 5 },
+				playerSprite,
+			);
+
+			// focus camera on player
+			this.player.focusCamera(this);
+
+			// Create the enemy group
 			this.enemyGroup = this.physics.add.group({});
 			if (this.colliderLayers) {
 				// Set collision for the obstacles layer
 				this.colliderLayers.setCollisionByProperty({ collide: true });
 
-				this.physics.add.collider(this.player, this.colliderLayers);
+				this.physics.add.collider(this.player.sprite, this.colliderLayers);
 				this.physics.add.collider(this.enemyGroup, this.colliderLayers);
 			}
 		}
@@ -68,14 +83,14 @@ export class Game extends Phaser.Scene {
 
 		// set outer rectangle and inner rectangle; enemy spawn area is between these rectangles
 		const outerRectangle: Phaser.Geom.Rectangle = new Phaser.Geom.Rectangle(
-			this.player.x - 100,
-			this.player.y - 100,
+			this.player.sprite.x - 100,
+			this.player.sprite.y - 100,
 			GAME_OPTIONS.gameSize.width + 200,
 			GAME_OPTIONS.gameSize.height + 200,
 		);
 		const innerRectangle: Phaser.Geom.Rectangle = new Phaser.Geom.Rectangle(
-			this.player.x - 50,
-			this.player.y - 50,
+			this.player.sprite.x - 50,
+			this.player.sprite.y - 50,
 			GAME_OPTIONS.gameSize.width + 100,
 			GAME_OPTIONS.gameSize.height + 100,
 		);
@@ -105,14 +120,14 @@ export class Game extends Phaser.Scene {
 			loop: true,
 			callback: () => {
 				const closestEnemy: any = this.physics.closest(
-					this.player,
+					this.player.sprite,
 					this.enemyGroup.getMatching("visible", true),
 				);
 				if (closestEnemy != null) {
 					const bullet: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody =
 						this.physics.add.sprite(
-							this.player.x,
-							this.player.y,
+							this.player.sprite.x,
+							this.player.sprite.y,
 							SpritesWeapons.getName(),
 						);
 					bulletGroup.add(bullet);
@@ -120,8 +135,8 @@ export class Game extends Phaser.Scene {
 
 					bullet.body.setAllowRotation(true);
 					bullet.rotation = Phaser.Math.Angle.Between(
-						this.player.x,
-						this.player.y,
+						this.player.sprite.x,
+						this.player.sprite.y,
 						closestEnemy.x,
 						closestEnemy.y,
 					);
@@ -148,7 +163,7 @@ export class Game extends Phaser.Scene {
 		);
 
 		// player Vs enemy collision
-		this.physics.add.collider(this.player, this.enemyGroup, () => {
+		this.physics.add.collider(this.player.sprite, this.enemyGroup, () => {
 			this.scene.restart();
 		});
 	}
@@ -161,11 +176,11 @@ export class Game extends Phaser.Scene {
 			0,
 		);
 		if (this.controlKeys.right.isDown) {
-			this.player.flipX = false;
+			this.player.sprite.flipX = false;
 			movementDirection.x++;
 		}
 		if (this.controlKeys.left.isDown) {
-			this.player.flipX = true;
+			this.player.sprite.flipX = true;
 			movementDirection.x--;
 		}
 		if (this.controlKeys.up.isDown) {
@@ -176,14 +191,14 @@ export class Game extends Phaser.Scene {
 		}
 
 		// set player velocity according to movement direction
-		this.player.setVelocity(0, 0);
+		this.player.sprite.setVelocity(0, 0);
 		if (movementDirection.x === 0 || movementDirection.y === 0) {
-			this.player.setVelocity(
+			this.player.sprite.setVelocity(
 				movementDirection.x * GAME_OPTIONS.playerSpeed,
 				movementDirection.y * GAME_OPTIONS.playerSpeed,
 			);
 		} else {
-			this.player.setVelocity(
+			this.player.sprite.setVelocity(
 				(movementDirection.x * GAME_OPTIONS.playerSpeed) / Math.sqrt(2),
 				(movementDirection.y * GAME_OPTIONS.playerSpeed) / Math.sqrt(2),
 			);
@@ -191,11 +206,11 @@ export class Game extends Phaser.Scene {
 
 		// Play "run" animation if moving, stop animation if not
 		if (movementDirection.x !== 0 || movementDirection.y !== 0) {
-			if (this.player.anims.currentAnim?.key !== "run") {
-				this.player.play({ key: "run", repeat: -1 });
+			if (this.player.sprite.anims.currentAnim?.key !== "run") {
+				this.player.sprite.play({ key: "run", repeat: -1 });
 			}
 		} else {
-			this.player.play("idle", true);
+			this.player.sprite.play("idle", true);
 		}
 
 		// move enemies towards player
@@ -208,7 +223,7 @@ export class Game extends Phaser.Scene {
 			} else if (enemy.body.velocity.x > 0 && enemy.flipX === true) {
 				enemy.flipX = false;
 			}
-			this.physics.moveToObject(enemy, this.player, GAME_OPTIONS.enemySpeed);
+			this.physics.moveToObject(enemy, this.player.sprite, GAME_OPTIONS.enemySpeed);
 		});
 	}
 }
