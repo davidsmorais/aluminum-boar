@@ -6,6 +6,7 @@ import {
 	TilemapsTileset,
 } from "../../types/assets";
 import { GAME_OPTIONS } from "../GameOptions";
+import { EnemySpawner } from "../procs/EnemySpawner";
 
 // PlayGame class extends Phaser.Scene class
 export class Game extends Phaser.Scene {
@@ -66,38 +67,7 @@ export class Game extends Phaser.Scene {
 			right: Phaser.Input.Keyboard.KeyCodes.D,
 		});
 
-		// set outer rectangle and inner rectangle; enemy spawn area is between these rectangles
-		const outerRectangle: Phaser.Geom.Rectangle = new Phaser.Geom.Rectangle(
-			this.player.x - 100,
-			this.player.y - 100,
-			GAME_OPTIONS.gameSize.width + 200,
-			GAME_OPTIONS.gameSize.height + 200,
-		);
-		const innerRectangle: Phaser.Geom.Rectangle = new Phaser.Geom.Rectangle(
-			this.player.x - 50,
-			this.player.y - 50,
-			GAME_OPTIONS.gameSize.width + 100,
-			GAME_OPTIONS.gameSize.height + 100,
-		);
-
-		// timer event to add enemies
-		this.time.addEvent({
-			delay: GAME_OPTIONS.enemyRate,
-			loop: true,
-			callback: () => {
-				const spawnPoint: Phaser.Geom.Point =
-					Phaser.Geom.Rectangle.RandomOutside(outerRectangle, innerRectangle);
-				const enemy: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody =
-					this.physics.add.sprite(
-						spawnPoint.x,
-						spawnPoint.y,
-						SpritesRat.getName(),
-					);
-				enemy.body.setSize(16, 16);
-				enemy.body.setOffset(8, 16);
-				this.enemyGroup.add(enemy);
-			},
-		});
+		new EnemySpawner(this);
 
 		// timer event to fire bullets
 		this.time.addEvent({
