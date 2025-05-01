@@ -24,6 +24,10 @@ interface EnemySpawnerConfig {
 }
 
 export class EnemySpawner {
+	player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody; // the player
+	enemyGroup: Phaser.Physics.Arcade.Group; // group with all enemies
+	colliderLayers: Phaser.Tilemaps.TilemapLayer | null; // layer with all tiles that collide
+
 	constructor(level: Game, config?: EnemySpawnerConfig) {
 		this.player = level.player;
 		this.enemyGroup = level.enemyGroup;
@@ -71,8 +75,4 @@ export class EnemySpawner {
 			},
 		});
 	}
-
-	player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody; // the player
-	enemyGroup: Phaser.Physics.Arcade.Group; // group with all enemies
-	colliderLayers: Phaser.Tilemaps.TilemapLayer | null; // layer with all tiles that collide
 }
