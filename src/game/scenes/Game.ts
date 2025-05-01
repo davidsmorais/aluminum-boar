@@ -6,6 +6,8 @@ import {
 	TilemapsTileset,
 } from "../../types/assets";
 import { GAME_OPTIONS } from "../GameOptions";
+import { EnemySpawner } from "../procs/EnemySpawner";
+import { WeaponLooper } from "../procs/WeaponLooper";
 
 // PlayGame class extends Phaser.Scene class
 export class Game extends Phaser.Scene {
@@ -66,87 +68,8 @@ export class Game extends Phaser.Scene {
 			right: Phaser.Input.Keyboard.KeyCodes.D,
 		});
 
-		// set outer rectangle and inner rectangle; enemy spawn area is between these rectangles
-		const outerRectangle: Phaser.Geom.Rectangle = new Phaser.Geom.Rectangle(
-			this.player.x - 100,
-			this.player.y - 100,
-			GAME_OPTIONS.gameSize.width + 200,
-			GAME_OPTIONS.gameSize.height + 200,
-		);
-		const innerRectangle: Phaser.Geom.Rectangle = new Phaser.Geom.Rectangle(
-			this.player.x - 50,
-			this.player.y - 50,
-			GAME_OPTIONS.gameSize.width + 100,
-			GAME_OPTIONS.gameSize.height + 100,
-		);
-
-		// timer event to add enemies
-		this.time.addEvent({
-			delay: GAME_OPTIONS.enemyRate,
-			loop: true,
-			callback: () => {
-				const spawnPoint: Phaser.Geom.Point =
-					Phaser.Geom.Rectangle.RandomOutside(outerRectangle, innerRectangle);
-				const enemy: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody =
-					this.physics.add.sprite(
-						spawnPoint.x,
-						spawnPoint.y,
-						SpritesRat.getName(),
-					);
-				enemy.body.setSize(16, 16);
-				enemy.body.setOffset(8, 16);
-				this.enemyGroup.add(enemy);
-			},
-		});
-
-		// timer event to fire bullets
-		this.time.addEvent({
-			delay: GAME_OPTIONS.bulletRate,
-			loop: true,
-			callback: () => {
-				const closestEnemy: any = this.physics.closest(
-					this.player,
-					this.enemyGroup.getMatching("visible", true),
-				);
-				if (closestEnemy != null) {
-					const bullet: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody =
-						this.physics.add.sprite(
-							this.player.x,
-							this.player.y,
-							SpritesWeapons.getName(),
-						);
-					bulletGroup.add(bullet);
-					bullet.play("knife");
-
-					bullet.body.setAllowRotation(true);
-					bullet.rotation = Phaser.Math.Angle.Between(
-						this.player.x,
-						this.player.y,
-						closestEnemy.x,
-						closestEnemy.y,
-					);
-					bullet.body.setSize(2, 2);
-					this.physics.moveToObject(
-						bullet,
-						closestEnemy,
-						GAME_OPTIONS.bulletSpeed,
-					);
-				}
-			},
-		});
-
-		// bullet Vs enemy collision
-		this.physics.add.collider(
-			bulletGroup,
-			this.enemyGroup,
-			(bullet: any, enemy: any) => {
-				bulletGroup.killAndHide(bullet);
-				bullet.body.checkCollision.none = true;
-				this.enemyGroup.killAndHide(enemy);
-				enemy.body.checkCollision.none = true;
-			},
-		);
-
+		new EnemySpawner(this);
+		new WeaponLooper(this, bulletGroup);
 		// player Vs enemy collision
 		this.physics.add.collider(this.player, this.enemyGroup, () => {
 			this.scene.restart();
