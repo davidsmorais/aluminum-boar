@@ -1,8 +1,9 @@
 const shell = require("shelljs");
 const fs = require("fs");
+const path = require("path");
 const camelCase = require("camelcase");
 
-const ASSET_CLASS_FILE = "src/types/assets.ts";
+const ASSET_CLASS_FILE = path.join("./src/types", "assets.ts");
 const ASSET_TYPE_EXTENSIONS = {
 	audio: ["flac", "mp3", "ogg", "wav", "webm"],
 	image: ["gif", "jpg", "jpeg", "png", "webp"],
@@ -365,6 +366,8 @@ result.push(
 result.push("");
 
 shell.cd(pwd);
+// NOTE: for windows only 1st try 👇
+// shell.mkdir("./src/types");
 shell.rm("-f", ASSET_CLASS_FILE);
 shell
 	.ShellString(
