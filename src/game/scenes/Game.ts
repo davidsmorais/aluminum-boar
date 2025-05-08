@@ -87,49 +87,7 @@ export class Game extends Phaser.Scene {
 
 	// metod to be called at each frame
 	update() {
-		// set movement direction according to keys pressed
-		const movementDirection: Phaser.Math.Vector2 = new Phaser.Math.Vector2(
-			0,
-			0,
-		);
-		if (this.controlKeys.right.isDown) {
-			this.player.sprite.flipX = false;
-			movementDirection.x++;
-		}
-		if (this.controlKeys.left.isDown) {
-			this.player.sprite.flipX = true;
-			movementDirection.x--;
-		}
-		if (this.controlKeys.up.isDown) {
-			movementDirection.y--;
-		}
-		if (this.controlKeys.down.isDown) {
-			movementDirection.y++;
-		}
-
-		// set player velocity according to movement direction
-		this.player.sprite.setVelocity(0, 0);
-		if (movementDirection.x === 0 || movementDirection.y === 0) {
-			this.player.sprite.setVelocity(
-				movementDirection.x * GAME_OPTIONS.playerSpeed,
-				movementDirection.y * GAME_OPTIONS.playerSpeed,
-			);
-		} else {
-			this.player.sprite.setVelocity(
-				(movementDirection.x * GAME_OPTIONS.playerSpeed) / Math.sqrt(2),
-				(movementDirection.y * GAME_OPTIONS.playerSpeed) / Math.sqrt(2),
-			);
-		}
-
-		// Play "run" animation if moving, stop animation if not
-		if (movementDirection.x !== 0 || movementDirection.y !== 0) {
-			if (this.player.sprite.anims.currentAnim?.key !== "run") {
-				this.player.sprite.play({ key: "run", repeat: -1 });
-			}
-		} else {
-			this.player.sprite.play("idle", true);
-		}
-
+		this.player.update();
 		// move enemies towards player
 		this.enemyGroup.getMatching("visible", true).forEach((enemy) => {
 			if (enemy.anims.currentAnim?.key !== "rat_run") {
