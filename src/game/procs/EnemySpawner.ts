@@ -29,7 +29,7 @@ export class EnemySpawner {
 	colliderLayers: Phaser.Tilemaps.TilemapLayer | null; // layer with all tiles that collide
 
 	constructor(level: Game, config?: EnemySpawnerConfig) {
-		this.player = level.player;
+		this.player = level.player.sprite;
 		this.enemyGroup = level.enemyGroup;
 		this.colliderLayers = level.colliderLayers;
 

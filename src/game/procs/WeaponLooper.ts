@@ -10,14 +10,14 @@ export class WeaponLooper {
 			callback: () => {
 				// TODO: itterate over player.weapons and do new Weapon() for each
 				const closestEnemy: any = level.physics.closest(
-					level.player,
+					level.player.sprite,
 					level.enemyGroup.getMatching("visible", true),
 				);
 				if (closestEnemy != null) {
 					const bullet: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody =
 						level.physics.add.sprite(
-							level.player.x,
-							level.player.y,
+							level.player.sprite.x,
+							level.player.sprite.y,
 							SpritesWeapons.getName(),
 						);
 					bulletsGroup.add(bullet);
@@ -25,8 +25,8 @@ export class WeaponLooper {
 
 					bullet.body.setAllowRotation(true);
 					bullet.rotation = Phaser.Math.Angle.Between(
-						level.player.x,
-						level.player.y,
+						level.player.sprite.x,
+						level.player.sprite.y,
 						closestEnemy.x,
 						closestEnemy.y,
 					);
