@@ -4,17 +4,12 @@ import { BaseCharacter, BaseStats } from "./BaseCharacter";
 
 export class PlayerCharacter extends BaseCharacter {
 	level: Game;
-	sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
 	constructor(spriteName: string, level: Game, stats: BaseStats) {
 		super(stats, level, spriteName);
 		this.level = level;
-		this.sprite = this.level.add.sprite(
-			GAME_OPTIONS.gameSize.width / 2,
-			GAME_OPTIONS.gameSize.height / 2,
-			spriteName,
-		) as Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-		return this;
+
+		console.log(this.sprite);
 	}
 
 	focusCamera(scene: Phaser.Scene): void {

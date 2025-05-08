@@ -16,7 +16,7 @@ export class BaseCharacter {
 	constructor(stats: BaseStats, level: Game, spriteName: string) {
 		this.stats = stats;
 
-		this.sprite = level.add.sprite(
+		this.sprite = level.physics.add.sprite(
 			GAME_OPTIONS.gameSize.width / 2,
 			GAME_OPTIONS.gameSize.height / 2,
 			spriteName,
