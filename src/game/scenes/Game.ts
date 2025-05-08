@@ -42,20 +42,14 @@ export class Game extends Phaser.Scene {
 			// Create layers from the tilemap
 			this.colliderLayers = map.createLayer("layer", tileset, 0, 0);
 
-			// Create the player sprite
-			const playerSprite = this.physics.add.sprite(
-				GAME_OPTIONS.gameSize.width / 2,
-				GAME_OPTIONS.gameSize.height / 2,
-				SpritesPlayer.getName(),
-			);
-
 			// Initialize the player character with stats and sprite
-			this.player = new PlayerCharacter(
-				"Player",
-				1,
-				{ health: 100, attack: 10, defense: 5, speed: 5 },
-				playerSprite,
-			);
+			this.player = new PlayerCharacter(SpritesPlayer.getName(), this, {
+				health: 100,
+				attack: 10,
+				defense: 5,
+				speed: 5,
+				level: 1,
+			});
 
 			// focus camera on player
 			this.player.focusCamera(this);

@@ -1,40 +1,34 @@
+import { GAME_OPTIONS } from "../GameOptions";
+import { Game } from "../scenes/Game";
 import { BaseCharacter, BaseStats } from "./BaseCharacter";
 
 export class PlayerCharacter extends BaseCharacter {
-    private name: string;
-    private level: number;
-    sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+	level: Game;
+	sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
-    constructor(name: string, level: number, stats: BaseStats, sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody) {
-        super(stats);
-        this.name = name;
-        this.level = level;
-        this.sprite = sprite;
-    }
+	constructor(spriteName: string, level: Game, stats: BaseStats) {
+		super(stats, level, spriteName);
+		this.level = level;
+		this.sprite = this.level.add.sprite(
+			GAME_OPTIONS.gameSize.width / 2,
+			GAME_OPTIONS.gameSize.height / 2,
+			spriteName,
+		) as Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+		return this;
+	}
 
-    createAnimations(scene: Phaser.Scene, asepriteKey: string): void {
-        scene.anims.createFromAseprite(asepriteKey);
-    }
+	focusCamera(scene: Phaser.Scene): void {
+		scene.cameras.main.startFollow(this.sprite, true, 0.1, 0.1);
+	}
 
-    focusCamera(scene: Phaser.Scene): void {
-        scene.cameras.main.startFollow(this.sprite, true, 0.1, 0.1);
-    }
-    
-    getName(): string {
-        return this.name;
-    }
-
-    getLevel(): number {
-        return this.level;
-    }
-
-    levelUp(): void {
-        this.level += 1;
-        this.updateStats({
-            health: this.getStats().health + 10,
-            attack: this.getStats().attack + 2,
-            defense: this.getStats().defense + 2,
-            speed: this.getStats().speed + 1,
-        });
-    }
+	levelUp(): void {
+		const currentStats = this.getStats();
+		this.updateStats({
+			level: currentStats.level + 1,
+			health: currentStats.health + 10,
+			attack: currentStats.attack + 2,
+			defense: currentStats.defense + 2,
+			speed: currentStats.speed + 1,
+		});
+	}
 }

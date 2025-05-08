@@ -1,34 +1,44 @@
+import { GAME_OPTIONS } from "../GameOptions";
+import { Game } from "../scenes/Game";
+
 export interface BaseStats {
-    health: number;
-    attack: number;
-    defense: number;
-    speed: number;
+	level: number;
+	health: number;
+	attack: number;
+	defense: number;
+	speed: number;
 }
 
 export class BaseCharacter {
-    protected stats: BaseStats;
+	protected stats: BaseStats;
+	sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
-    constructor(stats: BaseStats) {
-        this.stats = stats;
-    }
+	constructor(stats: BaseStats, level: Game, spriteName: string) {
+		this.stats = stats;
 
-    getStats(): BaseStats {
-        return this.stats;
-    }
+		this.sprite = level.add.sprite(
+			GAME_OPTIONS.gameSize.width / 2,
+			GAME_OPTIONS.gameSize.height / 2,
+			spriteName,
+		) as Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+	}
 
-    updateStats(newStats: Partial<BaseStats>): void {   
-        this.stats = { ...this.stats, ...newStats };
-    }
+	getStats(): BaseStats {
+		return this.stats;
+	}
 
-    isAlive(): boolean {
-        return this.stats.health > 0;
-    }
+	updateStats(newStats: Partial<BaseStats>): void {
+		this.stats = { ...this.stats, ...newStats };
+	}
 
-    takeDamage(damage: number): void {
-        this.stats.health -= damage;
-        if (this.stats.health < 0) {
-            this.stats.health = 0;
-        }
-    }
+	isAlive(): boolean {
+		return this.stats.health > 0;
+	}
 
+	takeDamage(damage: number): void {
+		this.stats.health -= damage;
+		if (this.stats.health < 0) {
+			this.stats.health = 0;
+		}
+	}
 }
