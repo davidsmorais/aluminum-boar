@@ -1,8 +1,8 @@
 import { EnemyWave } from "Types";
-import { SpritesRat } from "../../types/assets";
 import { GAME_OPTIONS } from "../GameOptions";
 import { BaseEnemy } from "../characters/BaseEnemy";
 import { Game } from "../scenes/Game";
+import ENEMY_WAVES from "./waves";
 
 interface EnemySpawnerConfig {
 	outerRectangle: {
@@ -30,27 +30,7 @@ export class EnemySpawner {
 		this.enemyGroup = level.enemyGroup;
 		this.colliderLayers = level.colliderLayers;
 
-		const enemyWaves = config?.enemyWaves || [
-			{
-				enemy: {
-					name: SpritesRat.getName(),
-					stats: {
-						maxHP: 10,
-						currentHP: 10,
-						attackDamage: 5,
-						moveSpeed: 50,
-						size: 1,
-						spawnWeight: 1,
-						experienceReward: 10,
-						currencyDrop: 1,
-						collisionDamage: true,
-					},
-				},
-				rate: GAME_OPTIONS.enemyRate,
-				delay: 1000,
-				count: 1,
-			},
-		];
+		const enemyWaves = config?.enemyWaves || ENEMY_WAVES;
 
 		// set outer rectangle and inner rectangle; enemy spawn area is between these rectangles
 		const outerRectangle: Phaser.Geom.Rectangle = new Phaser.Geom.Rectangle(
