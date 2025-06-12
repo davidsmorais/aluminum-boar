@@ -1,5 +1,7 @@
+import { EnemyWave } from "Types";
 import { SpritesRat } from "../../types/assets";
 import { GAME_OPTIONS } from "../GameOptions";
+import { BaseEnemy } from "../characters/BaseEnemy";
 import { Game } from "../scenes/Game";
 
 interface EnemySpawnerConfig {
@@ -15,12 +17,7 @@ interface EnemySpawnerConfig {
 		width: number;
 		height: number;
 	};
-	enemyWaves: {
-		rate: number;
-		delay: number;
-		count: number;
-		enemy: string; // TODO: replace with enemy class
-	}[];
+	enemyWaves: EnemyWave[];
 }
 
 export class EnemySpawner {
@@ -35,7 +32,20 @@ export class EnemySpawner {
 
 		const enemyWaves = config?.enemyWaves || [
 			{
-				enemy: SpritesRat.getName(),
+				enemy: {
+					name: SpritesRat.getName(),
+					stats: {
+						maxHP: 10,
+						currentHP: 10,
+						attackDamage: 5,
+						moveSpeed: 50,
+						size: 1,
+						spawnWeight: 1,
+						experienceReward: 10,
+						currencyDrop: 1,
+						collisionDamage: true,
+					},
+				},
 				rate: GAME_OPTIONS.enemyRate,
 				delay: 1000,
 				count: 1,
@@ -66,11 +76,15 @@ export class EnemySpawner {
 				for (let index = 0; index < wave.count; index++) {
 					const spawnPoint: Phaser.Geom.Point =
 						Phaser.Geom.Rectangle.RandomOutside(outerRectangle, innerRectangle);
-					const enemy: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody =
-						level.physics.add.sprite(spawnPoint.x, spawnPoint.y, wave.enemy);
-					enemy.body.setSize(16, 16);
-					enemy.body.setOffset(8, 16);
-					this.enemyGroup.add(enemy);
+					const enemy = new BaseEnemy(
+						spawnPoint,
+						wave.enemy.stats,
+						level,
+						wave.enemy.name,
+					);
+					enemy.sprite.body.setSize(16, 16);
+					enemy.sprite.body.setOffset(8, 16);
+					this.enemyGroup.add(enemy.sprite);
 				}
 			},
 		});
