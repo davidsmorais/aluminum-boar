@@ -5,8 +5,9 @@ import { Game } from "../scenes/Game";
 
 export class BaseEnemy {
 	protected stats: EnemyStats;
+	level: Game;
 	sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-
+	spriteName: string;
 	constructor(
 		spawnPoint: SpawnPoint,
 		stats: EnemyStats,
@@ -14,6 +15,8 @@ export class BaseEnemy {
 		spriteName: string,
 	) {
 		this.stats = stats;
+		this.level = level;
+		this.spriteName = spriteName;
 
 		this.sprite = level.physics.add.sprite(
 			spawnPoint.x,
@@ -39,5 +42,20 @@ export class BaseEnemy {
 		if (this.stats.currentHP < 0) {
 			this.stats.currentHP = 0;
 		}
+	}
+	update(): void {
+		if (this.sprite.anims.currentAnim?.key !== `${this.spriteName}_run`) {
+			this.sprite.play({ key: `${this.spriteName}_run`, repeat: -1 });
+		}
+		if (this.sprite.body.velocity.x < 0 && this.sprite.flipX === false) {
+			this.sprite.flipX = true;
+		} else if (this.sprite.body.velocity.x > 0 && this.sprite.flipX === true) {
+			this.sprite.flipX = false;
+		}
+		this.level.physics.moveToObject(
+			this.sprite,
+			this.level.player.sprite,
+			GAME_OPTIONS.enemySpeed,
+		);
 	}
 }
