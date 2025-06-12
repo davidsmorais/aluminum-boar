@@ -15,6 +15,7 @@
 	"homepage": "https://github.com/phaserjs/template-react-ts#readme",
 	"keywords": ["phaser", "phaser3", "react", "vite", "typescript"],
 	"scripts": {
+		"lint": "biome check --write",
 		"postinstall": "pnpm run assets",
 		"assets": "node ./scripts/assetsGenerator.js",
 		"dev": "node log.js dev & vite --config vite/config.dev.mjs",

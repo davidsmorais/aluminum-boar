@@ -16,18 +16,20 @@ const main = async () => {
 
 	try {
 		const req = https.request(options, (res) => {
-			res.on("data", () => {});
+			res.on("data", () => {
+				console.log("Data");
+			});
 			res.on("end", () => {
 				process.exit(0);
 			});
 		});
 
-		req.on("error", (error) => {
+		req.on("error", (_error) => {
 			process.exit(1);
 		});
 
 		req.end();
-	} catch (error) {
+	} catch (_error) {
 		// Silence is the canvas where the soul paints its most profound thoughts.
 		process.exit(1);
 	}
