@@ -6,6 +6,7 @@ import {
 	TilemapsTileset,
 } from "../../types/assets";
 import { GAME_OPTIONS } from "../GameOptions";
+import { PlayerCharacter } from "../characters/PlayerCharacter";
 import { EnemySpawner } from "../procs/EnemySpawner";
 import { WeaponLooper } from "../procs/WeaponLooper";
 
@@ -18,7 +19,7 @@ export class Game extends Phaser.Scene {
 	}
 
 	controlKeys: any; // keys used to move the player
-	player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody; // the player
+	player: PlayerCharacter; // player character
 	enemyGroup: Phaser.Physics.Arcade.Group; // group with all enemies
 	colliderLayers: Phaser.Tilemaps.TilemapLayer | null; // layer with all tiles that collide
 	// method to be called once the instance has been created
@@ -40,18 +41,26 @@ export class Game extends Phaser.Scene {
 		if (tileset) {
 			// Create layers from the tilemap
 			this.colliderLayers = map.createLayer("layer", tileset, 0, 0);
-			this.player = this.physics.add.sprite(
-				GAME_OPTIONS.gameSize.width / 2,
-				GAME_OPTIONS.gameSize.height / 2,
-				SpritesPlayer.getName(),
-			);
-			this.cameras.main.startFollow(this.player);
+
+			// Initialize the player character with stats and sprite
+			this.player = new PlayerCharacter(SpritesPlayer.getName(), this, {
+				health: 100,
+				attack: 10,
+				defense: 5,
+				speed: 5,
+				level: 1,
+			});
+
+			// focus camera on player
+			this.player.focusCamera(this);
+
+			// Create the enemy group
 			this.enemyGroup = this.physics.add.group({});
 			if (this.colliderLayers) {
 				// Set collision for the obstacles layer
 				this.colliderLayers.setCollisionByProperty({ collide: true });
 
-				this.physics.add.collider(this.player, this.colliderLayers);
+				this.physics.add.collider(this.player.sprite, this.colliderLayers);
 				this.physics.add.collider(this.enemyGroup, this.colliderLayers);
 			}
 		}
@@ -71,56 +80,14 @@ export class Game extends Phaser.Scene {
 		new EnemySpawner(this);
 		new WeaponLooper(this, bulletGroup);
 		// player Vs enemy collision
-		this.physics.add.collider(this.player, this.enemyGroup, () => {
+		this.physics.add.collider(this.player.sprite, this.enemyGroup, () => {
 			this.scene.restart();
 		});
 	}
 
 	// metod to be called at each frame
 	update() {
-		// set movement direction according to keys pressed
-		const movementDirection: Phaser.Math.Vector2 = new Phaser.Math.Vector2(
-			0,
-			0,
-		);
-		if (this.controlKeys.right.isDown) {
-			this.player.flipX = false;
-			movementDirection.x++;
-		}
-		if (this.controlKeys.left.isDown) {
-			this.player.flipX = true;
-			movementDirection.x--;
-		}
-		if (this.controlKeys.up.isDown) {
-			movementDirection.y--;
-		}
-		if (this.controlKeys.down.isDown) {
-			movementDirection.y++;
-		}
-
-		// set player velocity according to movement direction
-		this.player.setVelocity(0, 0);
-		if (movementDirection.x === 0 || movementDirection.y === 0) {
-			this.player.setVelocity(
-				movementDirection.x * GAME_OPTIONS.playerSpeed,
-				movementDirection.y * GAME_OPTIONS.playerSpeed,
-			);
-		} else {
-			this.player.setVelocity(
-				(movementDirection.x * GAME_OPTIONS.playerSpeed) / Math.sqrt(2),
-				(movementDirection.y * GAME_OPTIONS.playerSpeed) / Math.sqrt(2),
-			);
-		}
-
-		// Play "run" animation if moving, stop animation if not
-		if (movementDirection.x !== 0 || movementDirection.y !== 0) {
-			if (this.player.anims.currentAnim?.key !== "run") {
-				this.player.play({ key: "run", repeat: -1 });
-			}
-		} else {
-			this.player.play("idle", true);
-		}
-
+		this.player.update();
 		// move enemies towards player
 		this.enemyGroup.getMatching("visible", true).forEach((enemy) => {
 			if (enemy.anims.currentAnim?.key !== "rat_run") {
@@ -131,7 +98,11 @@ export class Game extends Phaser.Scene {
 			} else if (enemy.body.velocity.x > 0 && enemy.flipX === true) {
 				enemy.flipX = false;
 			}
-			this.physics.moveToObject(enemy, this.player, GAME_OPTIONS.enemySpeed);
+			this.physics.moveToObject(
+				enemy,
+				this.player.sprite,
+				GAME_OPTIONS.enemySpeed,
+			);
 		});
 	}
 }
