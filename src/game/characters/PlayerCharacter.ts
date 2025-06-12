@@ -1,15 +1,14 @@
+import { CharacterStats } from "Types";
 import { GAME_OPTIONS } from "../GameOptions";
 import { Game } from "../scenes/Game";
-import { BaseCharacter, BaseStats } from "./BaseCharacter";
+import { BaseCharacter } from "./BaseCharacter";
 
 export class PlayerCharacter extends BaseCharacter {
 	level: Game;
 
-	constructor(spriteName: string, level: Game, stats: BaseStats) {
+	constructor(spriteName: string, level: Game, stats: CharacterStats) {
 		super(stats, level, spriteName);
 		this.level = level;
-
-		console.log(this.sprite);
 	}
 
 	focusCamera(scene: Phaser.Scene): void {

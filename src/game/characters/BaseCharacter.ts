@@ -1,19 +1,12 @@
+import { CharacterStats } from "Types";
 import { GAME_OPTIONS } from "../GameOptions";
 import { Game } from "../scenes/Game";
 
-export interface BaseStats {
-	level: number;
-	health: number;
-	attack: number;
-	defense: number;
-	speed: number;
-}
-
 export class BaseCharacter {
-	protected stats: BaseStats;
+	protected stats: CharacterStats;
 	sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
-	constructor(stats: BaseStats, level: Game, spriteName: string) {
+	constructor(stats: CharacterStats, level: Game, spriteName: string) {
 		this.stats = stats;
 
 		this.sprite = level.physics.add.sprite(
@@ -23,11 +16,11 @@ export class BaseCharacter {
 		) as Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 	}
 
-	getStats(): BaseStats {
+	getStats(): CharacterStats {
 		return this.stats;
 	}
 
-	updateStats(newStats: Partial<BaseStats>): void {
+	updateStats(newStats: Partial<CharacterStats>): void {
 		this.stats = { ...this.stats, ...newStats };
 	}
 

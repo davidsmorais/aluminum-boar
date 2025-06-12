@@ -12,6 +12,7 @@ export default defineConfig({
 		alias: {
 			// Manually map the alias if needed
 			public: "/public",
+			Types: "/src/game/types.ts",
 		},
 	},
 });
