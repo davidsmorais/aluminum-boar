@@ -19,6 +19,7 @@ export class Game extends Phaser.Scene {
 
 	controlKeys: any; // keys used to move the player
 	player: PlayerCharacter; // player character
+	spawner: EnemySpawner; // spawner for enemies
 	enemyGroup: Phaser.Physics.Arcade.Group; // group with all enemies
 	colliderLayers: Phaser.Tilemaps.TilemapLayer | null; // layer with all tiles that collide
 	// method to be called once the instance has been created
@@ -76,7 +77,7 @@ export class Game extends Phaser.Scene {
 			right: Phaser.Input.Keyboard.KeyCodes.D,
 		});
 
-		new EnemySpawner(this);
+		this.spawner = new EnemySpawner(this);
 		new WeaponLooper(this, bulletGroup);
 		// player Vs enemy collision
 		this.physics.add.collider(this.player.sprite, this.enemyGroup, () => {
@@ -89,7 +90,9 @@ export class Game extends Phaser.Scene {
 		this.player.update();
 		// move enemies towards player
 		this.enemyGroup.getMatching("visible", true).forEach((enemy) => {
-			enemy.update();
+			if (enemy.baseEnemyRef) {
+				enemy.baseEnemyRef.update();
+			}
 		});
 	}
 }

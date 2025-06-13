@@ -6,8 +6,11 @@ import { Game } from "../scenes/Game";
 export class BaseEnemy {
 	protected stats: EnemyStats;
 	level: Game;
-	sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+	sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody & {
+		baseEnemyRef?: BaseEnemy;
+	};
 	spriteName: string;
+	// index of the enemy in the spawner's enemies array
 	constructor(
 		spawnPoint: SpawnPoint,
 		stats: EnemyStats,
@@ -41,8 +44,20 @@ export class BaseEnemy {
 		this.stats.currentHP -= damage;
 		if (this.stats.currentHP < 0) {
 			this.stats.currentHP = 0;
+			this.die();
 		}
 	}
+
+	die(): void {
+		console.log("Deff");
+		// remove index from array of spawned enemies
+		this.level.enemyGroup.remove(this.sprite, true, true);
+		// const index = this.level.spawner.enemies.indexOf(this);
+		// if (index > -1) {
+		// 	this.level.spawner.enemies.splice(index, 1);
+		// }
+	}
+
 	update(): void {
 		if (this.sprite.anims.currentAnim?.key !== `${this.spriteName}_run`) {
 			this.sprite.play({ key: `${this.spriteName}_run`, repeat: -1 });

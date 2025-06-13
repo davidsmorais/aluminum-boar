@@ -24,7 +24,7 @@ export class EnemySpawner {
 	player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody; // the player
 	enemyGroup: Phaser.Physics.Arcade.Group; // group with all enemies
 	colliderLayers: Phaser.Tilemaps.TilemapLayer | null; // layer with all tiles that collide
-
+	enemies: BaseEnemy[] = []; // array to keep track of spawned enemies
 	constructor(level: Game, config?: EnemySpawnerConfig) {
 		this.player = level.player.sprite;
 		this.enemyGroup = level.enemyGroup;
@@ -64,6 +64,7 @@ export class EnemySpawner {
 					);
 					enemy.sprite.body.setSize(16, 16);
 					enemy.sprite.body.setOffset(8, 16);
+					enemy.sprite.baseEnemyRef = enemy; // Reference to the BaseEnemy instance
 					this.enemyGroup.add(enemy.sprite);
 				}
 			},
