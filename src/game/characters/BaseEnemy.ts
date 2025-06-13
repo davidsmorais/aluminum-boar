@@ -10,7 +10,6 @@ export class BaseEnemy {
 		baseEnemyRef?: BaseEnemy;
 	};
 	spriteName: string;
-	// index of the enemy in the spawner's enemies array
 	constructor(
 		spawnPoint: SpawnPoint,
 		stats: EnemyStats,
@@ -49,13 +48,8 @@ export class BaseEnemy {
 	}
 
 	die(): void {
-		console.log("Deff");
 		// remove index from array of spawned enemies
 		this.level.enemyGroup.remove(this.sprite, true, true);
-		// const index = this.level.spawner.enemies.indexOf(this);
-		// if (index > -1) {
-		// 	this.level.spawner.enemies.splice(index, 1);
-		// }
 	}
 
 	update(): void {

@@ -2,7 +2,7 @@ import { EnemyWave } from "Types";
 import { GAME_OPTIONS } from "../GameOptions";
 import { BaseEnemy } from "../characters/BaseEnemy";
 import { Game } from "../scenes/Game";
-import ENEMY_WAVES from "./waves";
+import ENEMY_WAVES from "./WAVES";
 
 interface EnemySpawnerConfig {
 	outerRectangle: {

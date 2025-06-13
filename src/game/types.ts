@@ -34,3 +34,19 @@ export interface EnemyWave {
 		stats: EnemyStats;
 	}; // TODO: replace with enemy class
 }
+
+export interface WeaponStats {
+	// Base stats
+	range: number;
+	projectileSpeed: number;
+	damage: number; // Base damage value before any multipliers
+	pierce: number; // Number of enemies a projectile can pass through (0 for no pierce)
+	aoeRadius: number; // Radius of the area of effect (0 for single target)
+	attackSpeed: number; // Attacks per second (higher is faster)
+	projectileCount: number; // Number of projectiles launched per attack
+	cooldown: number; // Time in seconds between attacks (alternative to attackSpeed for burst weapons)
+
+	// Visual/FX
+	projectileSprite?: string;
+	impactEffect?: string;
+}

@@ -1,6 +1,6 @@
-import { SpritesWeapons } from "../../types/assets";
 import { GAME_OPTIONS } from "../GameOptions";
 import { Game } from "../scenes/Game";
+import { Knife } from "./weapons/knife";
 
 export class WeaponLooper {
 	constructor(level: Game, bulletsGroup: Phaser.Physics.Arcade.Group) {
@@ -14,28 +14,7 @@ export class WeaponLooper {
 					level.enemyGroup.getMatching("visible", true),
 				);
 				if (closestEnemy != null) {
-					const bullet: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody =
-						level.physics.add.sprite(
-							level.player.sprite.x,
-							level.player.sprite.y,
-							SpritesWeapons.getName(),
-						);
-					bulletsGroup.add(bullet);
-					bullet.play("knife");
-
-					bullet.body.setAllowRotation(true);
-					bullet.rotation = Phaser.Math.Angle.Between(
-						level.player.sprite.x,
-						level.player.sprite.y,
-						closestEnemy.x,
-						closestEnemy.y,
-					);
-					bullet.body.setSize(2, 2);
-					level.physics.moveToObject(
-						bullet,
-						closestEnemy,
-						GAME_OPTIONS.bulletSpeed,
-					);
+					new Knife(level, bulletsGroup, closestEnemy);
 				}
 			},
 		});
