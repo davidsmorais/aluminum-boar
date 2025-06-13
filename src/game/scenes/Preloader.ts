@@ -1,11 +1,11 @@
-import { Scene } from "phaser";
 import {
 	SpritesPlayer,
 	SpritesRat,
 	SpritesWeapons,
 	TilemapsDemo,
 	TilemapsTileset,
-} from "../../types/assets";
+} from "Assets";
+import { Scene } from "phaser";
 
 export class Preloader extends Scene {
 	constructor() {

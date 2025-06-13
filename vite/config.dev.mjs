@@ -13,6 +13,7 @@ export default defineConfig({
 			// Manually map the alias if needed
 			public: "/public",
 			Types: "/src/game/types.ts",
+			Assets: "/src/types/assets.ts",
 		},
 	},
 });

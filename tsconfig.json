@@ -24,6 +24,7 @@
 		/* Path Aliases */
 		"baseUrl": "./",
 		"paths": {
+			"Assets": ["src/types/assets.ts"],
 			"Types": ["src/game/types.ts"],
 			"public/*": ["public/*"]
 		}

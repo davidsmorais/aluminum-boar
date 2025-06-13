@@ -1,4 +1,4 @@
-import { SpritesRat } from "src/types/assets";
+import { SpritesRat } from "Assets";
 
 export const RAT_ENEMY = {
 	name: SpritesRat.getName(),

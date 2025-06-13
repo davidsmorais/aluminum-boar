@@ -4,8 +4,7 @@ import {
 	SpritesWeapons,
 	TilemapsDemo,
 	TilemapsTileset,
-} from "../../types/assets";
-import { GAME_OPTIONS } from "../GameOptions";
+} from "Assets";
 import { PlayerCharacter } from "../characters/PlayerCharacter";
 import { EnemySpawner } from "../procs/EnemySpawner";
 import { WeaponLooper } from "../procs/WeaponLooper";
@@ -90,19 +89,7 @@ export class Game extends Phaser.Scene {
 		this.player.update();
 		// move enemies towards player
 		this.enemyGroup.getMatching("visible", true).forEach((enemy) => {
-			if (enemy.anims.currentAnim?.key !== "rat_run") {
-				enemy.play({ key: "rat_run", repeat: -1 });
-			}
-			if (enemy.body.velocity.x < 0 && enemy.flipX === false) {
-				enemy.flipX = true;
-			} else if (enemy.body.velocity.x > 0 && enemy.flipX === true) {
-				enemy.flipX = false;
-			}
-			this.physics.moveToObject(
-				enemy,
-				this.player.sprite,
-				GAME_OPTIONS.enemySpeed,
-			);
+			enemy.update();
 		});
 	}
 }
