@@ -1,6 +1,6 @@
+import { GAME_OPTIONS } from "Game/GameOptions";
+import { Game } from "Scenes/Game";
 import { CharacterStats } from "Types";
-import { GAME_OPTIONS } from "../GameOptions";
-import { Game } from "../scenes/Game";
 
 export class BaseCharacter {
 	protected stats: CharacterStats;

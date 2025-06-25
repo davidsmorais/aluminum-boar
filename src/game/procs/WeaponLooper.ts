@@ -1,6 +1,6 @@
-import { GAME_OPTIONS } from "../GameOptions";
-import { Game } from "../scenes/Game";
-import { Knife } from "./weapons/knife";
+import { GAME_OPTIONS } from "Game/GameOptions";
+import { Game } from "Scenes/Game";
+import { Knife } from "Weapons/knife";
 
 export class WeaponLooper {
 	constructor(level: Game, bulletsGroup: Phaser.Physics.Arcade.Group) {

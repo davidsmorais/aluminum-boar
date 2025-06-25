@@ -5,9 +5,9 @@ import {
 	TilemapsDemo,
 	TilemapsTileset,
 } from "Assets";
-import { PlayerCharacter } from "../characters/PlayerCharacter";
-import { EnemySpawner } from "../procs/EnemySpawner";
-import { WeaponLooper } from "../procs/WeaponLooper";
+import { PlayerCharacter } from "Characters/PlayerCharacter";
+import { EnemySpawner } from "Procs/EnemySpawner";
+import { WeaponLooper } from "Procs/WeaponLooper";
 
 // PlayGame class extends Phaser.Scene class
 export class Game extends Phaser.Scene {

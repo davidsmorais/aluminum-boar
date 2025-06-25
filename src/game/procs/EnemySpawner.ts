@@ -1,7 +1,7 @@
+import { BaseEnemy } from "Characters/BaseEnemy";
+import { GAME_OPTIONS } from "Game/GameOptions";
+import { Game } from "Scenes/Game";
 import { EnemyWave } from "Types";
-import { GAME_OPTIONS } from "../GameOptions";
-import { BaseEnemy } from "../characters/BaseEnemy";
-import { Game } from "../scenes/Game";
 import ENEMY_WAVES from "./WAVES";
 
 interface EnemySpawnerConfig {

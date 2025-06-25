@@ -12,8 +12,14 @@ export default defineConfig({
 		alias: {
 			// Manually map the alias if needed
 			public: "/public",
-			Types: "/src/game/types.ts",
 			Assets: "/src/types/assets.ts",
+			Types: "/src/game/types.ts",
+			Game: "/src/game",
+			Characters: "/src/game/characters",
+			Scenes: "/src/game/scenes",
+			Procs: "/src/game/procs",
+			Weapons: "/src/game/procs/weapons",
+			Src: "/src",
 		},
 	},
 });

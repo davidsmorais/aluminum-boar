@@ -1,5 +1,5 @@
-import { GAME_OPTIONS } from "../GameOptions";
-import { RAT_ENEMY } from "../characters/ENEMIES";
+import { RAT_ENEMY } from "Characters/ENEMIES";
+import { GAME_OPTIONS } from "Game/GameOptions";
 
 const ENEMY_WAVES = [
 	{

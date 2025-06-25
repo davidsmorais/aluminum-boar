@@ -1,7 +1,7 @@
+import { GAME_OPTIONS } from "Game/GameOptions";
+import { Game } from "Scenes/Game";
 import { EnemyStats, SpawnPoint } from "Types";
 import Phaser from "phaser";
-import { GAME_OPTIONS } from "../GameOptions";
-import { Game } from "../scenes/Game";
 
 export class BaseEnemy {
 	protected stats: EnemyStats;
